@@ -14,6 +14,14 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            {{ include('fragments/_navbar.html.twig', {currentRoute: app.request.attributes.get('_route')}) }}
+        </header>
+        <main>
+            {% block body %}{% endblock %}
+        </main>
+        <aside>
+            {{ render(controller('App\\Controller\\DefaultController::decades')) }}
+        </aside>
     </body>
 </html>
