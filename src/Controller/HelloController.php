@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HelloController extends AbstractController
 {
     /**
-     * @Route("/hello/{name<[a-zA-Z- ]+>?World}", name="app_hello")
+     * @Route("/hello/{name<[a-zA-Z- ]+>}", name="app_hello", defaults={"name": "World"})
      */
     public function index(string $name): Response
     {
