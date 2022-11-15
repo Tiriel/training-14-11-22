@@ -15,7 +15,9 @@
     </head>
     <body>
         <header>
-            {{ include('fragments/_navbar.html.twig', {currentRoute: app.request.attributes.get('_route')}) }}
+            {% block header %}
+                {{ include('fragments/_navbar.html.twig', {currentRoute: app.request.attributes.get('_route')}) }}
+            {% endblock %}
         </header>
         <main class="container-fluid mt-5">
             <div class="row">

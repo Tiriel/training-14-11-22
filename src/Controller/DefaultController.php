@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Form\ContactType;
+use App\Repository\MovieRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,20 +14,29 @@ class DefaultController extends AbstractController
     /**
      * @Route("", name="app_default_index")
      */
-    public function index(): Response
+    public function index(MovieRepository $repository): Response
     {
         return $this->render('default/index.html.twig', [
-            'controller_name' => 'Index',
+            'movies' => $repository->findBy([], ['id' => 'DESC'], 6)
         ]);
     }
 
     /**
      * @Route("/contact", name="app_default_contact")
      */
-    public function contact(): Response
+    public function contact(Request $request): Response
     {
-        return $this->render('default/contact.html.twig', [
-            'controller_name' => 'Contact',
+        $form = $this->createForm(ContactType::class);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            dump($form->getData());
+
+            return $this->redirectToRoute('app_default_contact');
+        }
+
+        return $this->renderForm('default/contact.html.twig', [
+            'form' => $form,
         ]);
     }
 

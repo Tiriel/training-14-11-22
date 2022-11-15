@@ -1,15 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'Sensio TV+' %}
+{% block title %}Sensio TV+{% endblock %}
+
+{% block header %}
+    {{ parent() }}
+    <section class="bg-black h-100 p-5">
+        <div class="text-white text-center h-100">
+            <h1 class="display-3 font-weight-bold m-0">SensioTV+</h1>
+        </div>
+    </section>
+{% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/benjamin/Dev/sl/formations/training-14-11-22/src/Controller/DefaultController.php'|file_link(0) }}">src/Controller/DefaultController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/benjamin/Dev/sl/formations/training-14-11-22/templates/default/index.html.twig'|file_link(0) }}">templates/default/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <section>
+        <h2 class="text-center">Latest movies:</h2>
+        <div class="row row-cols-3">
+            {% for movie in movies %}
+                <div class="col">
+                    <div class="card w-75">
+                        <img src="{{ movie.poster }}" alt="{{ movie.poster }}">
+                        <div class="card-img-overlay text-white">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text">Release date: {{ movie.releasedAt|date('Y/m/d') }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <p>No movies in database yet...</p>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock %}
