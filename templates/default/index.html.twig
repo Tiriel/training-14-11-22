@@ -17,13 +17,15 @@
         <div class="row row-cols-3">
             {% for movie in movies %}
                 <div class="col">
-                    <div class="card w-75">
-                        <img src="{{ movie.poster }}" alt="{{ movie.poster }}">
-                        <div class="card-img-overlay text-white">
-                            <h5 class="card-title">{{ movie.title }}</h5>
-                            <p class="card-text">Release date: {{ movie.releasedAt|date('Y/m/d') }}</p>
+                    <a href="{{ path('app_movie_details', {'id': movie.id}) }}">
+                        <div class="card w-75">
+                            <img src="{{ movie.poster }}" alt="{{ movie.poster }}">
+                            <div class="card-img-overlay text-white">
+                                <h5 class="card-title">{{ movie.title }}</h5>
+                                <p class="card-text">Release date: {{ movie.releasedAt|date('Y/m/d') }}</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             {% else %}
                 <p>No movies in database yet...</p>

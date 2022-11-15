@@ -1,15 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello MovieController!{% endblock %}
+{% block title %}Movies{% endblock %}
 
 {% block body %}
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <div class="example-wrapper">
+        <h1>Available movies</h1>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/home/benjamin/Dev/sl/formations/training-14-11-22/src/Controller/MovieController.php'|file_link(0) }}">src/Controller/MovieController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/home/benjamin/Dev/sl/formations/training-14-11-22/templates/movie/index.html.twig'|file_link(0) }}">templates/movie/index.html.twig</a></code></li>
-    </ul>
-</div>
+        <section class="row row-cols-3 mt-5">
+            {% for movie in movies %}
+                <div class="col">
+                    <a href="{{ path('app_movie_details', {'id': movie.id}) }}">
+                        <div class="card w-75">
+                            <img src="{{ movie.poster }}" alt="{{ movie.poster }}">
+                            <div class="card-img-overlay text-white">
+                                <h5 class="card-title">{{ movie.title }}</h5>
+                                <p class="card-text">Release date: {{ movie.releasedAt|date('Y/m/d') }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% else %}
+                <p>No movies in database yet...</p>
+            {% endfor %}
+        </section>
+    </div>
 {% endblock %}
