@@ -17,11 +17,16 @@
         <header>
             {{ include('fragments/_navbar.html.twig', {currentRoute: app.request.attributes.get('_route')}) }}
         </header>
-        <main>
-            {% block body %}{% endblock %}
+        <main class="container-fluid mt-5">
+            <div class="row">
+                <aside class="col-1"></aside>
+                <section class="col-10">
+                    {% block body %}{% endblock %}
+               </section>
+                <aside class="col-1">
+                    {{ render(controller('App\\Controller\\DefaultController::decades')) }}
+                </aside>
+           </div>
         </main>
-        <aside>
-            {{ render(controller('App\\Controller\\DefaultController::decades')) }}
-        </aside>
     </body>
 </html>

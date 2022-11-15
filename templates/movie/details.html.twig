@@ -2,6 +2,11 @@
 
 {% block title %}Movie : {{ movie.title }}{% endblock %}
 
+{#{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('payment') }}
+{% endblock %}#}
+
 {% block body %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
