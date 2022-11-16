@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     books_limit: 10
+    env(DATABASE_URL): 'no value'
+    app_default_database_url: 'null://null'
+    app_maintenance: '%env(bool:APP_MAINTENANCE)%'
 
 services:
     # default configuration for services in *this* file
@@ -13,6 +16,13 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             int $booksLimit: '%books_limit%'
+            string $sfVersion: '%env(key:require:key:symfony:key:extra:json:file:resolve:COMPOSER_PATH)%'
+            iterable $factories: !tagged_iterator app.notification_factory
+#            string $foo: 'foo'
+    _instanceof:
+        App\Notifier\Factory\NotificationFactoryInterface:
+            tags:
+                - { name: app.notification_factory }
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
