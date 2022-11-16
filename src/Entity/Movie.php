@@ -50,7 +50,7 @@ class Movie
     private $plot;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Genre::class)
+     * @ORM\ManyToMany(targetEntity=Genre::class, cascade={"persist"})
      */
     private $genres;
 

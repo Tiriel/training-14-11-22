@@ -10,10 +10,11 @@
 {% block body %}
 <div class="example-wrapper">
     {% if movie is not null %}
-    <h1>Movie : {{ movie.title }}</h1>
+    <h1 class="mb-5">Movie : {{ movie.title }}</h1>
 
     <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" class="float-end">
     <ul>
+        <li>Id : {{ movie.id }}</li>
         <li>Country : {{ movie.country }}</li>
         <li>Released At : {{ movie.releasedAt|date('d M Y') }}</li>
         <li>Genre : {{ movie.genres|map(genre => genre.name)|join(', ') }}</li>
