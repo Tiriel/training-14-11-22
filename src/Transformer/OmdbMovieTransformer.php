@@ -25,6 +25,8 @@ class OmdbMovieTransformer implements \Symfony\Component\Form\DataTransformerInt
             ->setCountry($value['Country'])
             ->setReleasedAt(new \DateTimeImmutable($date))
             ->setPlot($value['Plot'])
+            ->setRated($value['Rated'])
+            ->setImdbId($value['imdbID'])
             ->setPrice('5.0')
             ;
 

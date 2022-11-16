@@ -15,10 +15,12 @@
     <img src="{{ movie.poster }}" alt="{{ movie.title }} poster" class="float-end">
     <ul>
         <li>Id : {{ movie.id }}</li>
-        <li>Country : {{ movie.country }}</li>
+        <li>Imdb Id : {{ movie.imdbId }}</li>
+        <li>Rated : {{ movie.rated }}</li>
         <li>Released At : {{ movie.releasedAt|date('d M Y') }}</li>
         <li>Genre : {{ movie.genres|map(genre => genre.name)|join(', ') }}</li>
         <li>Plot : {{ movie.plot }}</li>
+        <li>Country : {{ movie.country }}</li>
         <li>Price : {{ movie.price }}</li>
     </ul>
     {% else %}
