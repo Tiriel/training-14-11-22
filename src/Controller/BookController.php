@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\BookManager;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
@@ -18,10 +19,12 @@ class BookController extends AbstractController
     /**
      * @Route("", name="app_book_index")
      */
-    public function index(): Response
+    public function index(BookManager $manager): Response
     {
+        $book = $manager->getBookByTitle('1984');
+
         return $this->render('book/index.html.twig', [
-            'controller_name' => 'BookController::index',
+            'books' => $manager->getBooks(),
         ]);
     }
 
@@ -38,8 +41,9 @@ class BookController extends AbstractController
     /**
      * @Route("/new", name="app_book_new", methods={"GET", "POST"})
      */
-    public function new(Request $request)
+    public function new(Request $request, int $booksLimit)
     {
+        dump($booksLimit);
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
 

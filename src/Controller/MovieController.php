@@ -15,10 +15,10 @@ class MovieController extends AbstractController
     /**
      * @Route("", name="app_movie_index")
      */
-    public function index(): Response
+    public function index(MovieRepository $repository): Response
     {
         return $this->render('movie/index.html.twig', [
-            'controller_name' => 'MovieController',
+            'movies' => $repository->findAll(),
         ]);
     }
 
