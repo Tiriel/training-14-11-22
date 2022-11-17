@@ -18,6 +18,7 @@ services:
             int $booksLimit: '%books_limit%'
             string $sfVersion: '%env(key:require:key:symfony:key:extra:json:file:resolve:COMPOSER_PATH)%'
             iterable $factories: !tagged_iterator app.notification_factory
+            bool $isMaintenance: '%app_maintenance%'
 #            string $foo: 'foo'
     _instanceof:
         App\Notifier\Factory\NotificationFactoryInterface:

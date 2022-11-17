@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Consumer\OmdbApiConsumer;
 use App\Provider\MovieProvider;
 use App\Repository\MovieRepository;
+use App\Security\Voter\MovieVoter;
 use App\Transformer\OmdbMovieTransformer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * @Route("/movie")
@@ -30,8 +32,11 @@ class MovieController extends AbstractController
      */
     public function details(int $id, MovieRepository $repository): Response
     {
+        $movie = $repository->find($id);
+        $this->denyAccessUnlessGranted(MovieVoter::VIEW, $movie);
+
         return $this->render('movie/details.html.twig', [
-            'movie' => $repository->find($id),
+            'movie' => $movie,
         ]);
     }
 
@@ -41,6 +46,7 @@ class MovieController extends AbstractController
     public function omdb(string $title, MovieProvider $provider): Response
     {
         $movie = $provider->getMovie(OmdbApiConsumer::MODE_TITLE, $title);
+        $this->denyAccessUnlessGranted(MovieVoter::VIEW, $movie);
 
         return $this->render('movie/details.html.twig', [
             'movie' => $movie,

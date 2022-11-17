@@ -4,26 +4,31 @@ namespace App\Provider;
 
 use App\Consumer\OmdbApiConsumer;
 use App\Entity\Movie;
+use App\Entity\User;
 use App\Repository\MovieRepository;
 use App\Transformer\OmdbMovieTransformer;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Security\Core\Security;
 
 class MovieProvider
 {
     private OmdbApiConsumer $consumer;
     private OmdbMovieTransformer $transformer;
     private MovieRepository $repository;
-    private ?SymfonyStyle $io;
+    private ?SymfonyStyle $io = null;
+    private Security $security;
 
     public function __construct(
         OmdbApiConsumer $consumer,
         OmdbMovieTransformer $transformer,
-        MovieRepository $repository
+        MovieRepository $repository,
+        Security $security
     )
     {
         $this->consumer = $consumer;
         $this->transformer = $transformer;
         $this->repository = $repository;
+        $this->security = $security;
     }
 
     public function setIo(SymfonyStyle $io): void
@@ -46,6 +51,10 @@ class MovieProvider
 
         $this->sendIo('text', 'Movie found, saving in database.');
         $movie = $this->transformer->transform($data);
+
+        if (($user = $this->security->getUser()) instanceof User) {
+            $movie->setCreatedBy($user);
+        }
         $this->repository->add($movie, true);
 
         return $movie;
