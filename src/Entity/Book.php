@@ -55,6 +55,11 @@ class Book
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     */
+    private $createdBy;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -151,6 +156,18 @@ class Book
                 $comment->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): self
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }

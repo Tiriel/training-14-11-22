@@ -4,8 +4,11 @@ namespace App\Controller;
 
 use App\BookManager;
 use App\Entity\Book;
+use App\Entity\User;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use App\Repository\UserRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -39,9 +42,10 @@ class BookController extends AbstractController
     }
 
     /**
+     * @IsGranted("ROLE_AUTHOR")
      * @Route("/new", name="app_book_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, int $booksLimit)
+    public function new(Request $request, int $booksLimit, BookRepository $repository)
     {
         dump($booksLimit);
         $book = new Book();
@@ -49,7 +53,8 @@ class BookController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            dump($book);
+            $book->setCreatedBy($this->getUser());
+            $repository->add($book, true);
 
             return $this->redirectToRoute('app_book_new');
         }
@@ -57,5 +62,18 @@ class BookController extends AbstractController
         return $this->renderForm('book/new.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/author", name="app_book_author")
+     */
+    public function author(UserRepository $repository)
+    {
+        $user = $this->getUser();
+        assert($user instanceof User);
+        $user->setRoles(['ROLE_AUTHOR']);
+        $repository->add($user, true);
+
+        return $this->redirectToRoute('app_book_index');
     }
 }

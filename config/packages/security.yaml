@@ -4,6 +4,12 @@ security:
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    access_decision_manager:
+        strategy: affirmative # priority, consensus, unanimous
+    role_hierarchy:
+        ROLE_ADMIN:
+            - ROLE_MODERATOR
+            - ROLE_PROVIDER
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
@@ -38,7 +44,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin/(book|movie)/\d+/edit, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
